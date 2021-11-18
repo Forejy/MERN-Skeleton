@@ -1,0 +1,23 @@
+{
+  "scripts": {
+    "development": "nodemon",
+    "build": "webpack --config webpack.config.client.production.js && webpack --mode production --config webpack.config.server.js",
+    "start": "NODE_ENV=production node ./dist/server.generatedtest.js"
+  },
+  "name": "preparing-the-development-environment",
+  "version": "1.0.0",
+  "description": "Un projet pour prendre le temps de préparer un environnement pour le developpement",
+  "main": "./server/server.js",
+  "author": "Forejy",
+  "license": "MIT",
+  "dependencies": {
+    "react-hot-loader": "4.13.0",
+    "@hot-loader/react-dom": "17.0.1"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "7.9.4",
+    "webpack-dev-middleware": "5.2.2",
+    "webpack-hot-middleware": "2.25.0",
+    "file-loader": "6.2.0"
+  }
+}
