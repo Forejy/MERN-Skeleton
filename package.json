@@ -12,7 +12,13 @@
   "license": "MIT",
   "dependencies": {
     "react-hot-loader": "4.13.0",
-    "@hot-loader/react-dom": "17.0.1"
+    "@hot-loader/react-dom": "17.0.1",
+		"react": "17.0.2",
+		"react-dom": "17.0.2",
+		"react-router": "6.0.2",
+		"react-router-dom": "6.0.2",
+		"@materiel-ui/core": "4.12.3",
+		"@materiel-ui/icons": "4.11.2"
   },
   "devDependencies": {
     "@babel/preset-react": "7.9.4",
