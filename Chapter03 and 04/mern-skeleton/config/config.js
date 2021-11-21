@@ -1,3 +1,10 @@
+import dotenv from 'dotenv'
+
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config()
+  console.log("process.env: ", process.env.MONGODB_URI)
+}
+
 const config = {
   env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
