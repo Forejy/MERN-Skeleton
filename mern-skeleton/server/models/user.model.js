@@ -3,7 +3,7 @@ import crypto from 'crypto'
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    trim: true,
+    trim: true, //space at the beginning and at the end, but not between words
     required: 'Name is required'
   },
   email: {
@@ -25,11 +25,14 @@ const UserSchema = new mongoose.Schema({
   }
 })
 
+
+//Au moment où il y a un get, un find, de l'user, le champs password rendu va passer par le virtual ?// "When the password value is received on user creation or update, it is encrypted into a new hashed value and set to the hashed_password field, along with the unique salt value in the salt field."
 UserSchema
   .virtual('password')
   .set(function(password) {
     this._password = password
     this.salt = this.makeSalt()
+    // Salting is simply the addition of a unique, random string of characters known only to the site to each password before it is hashed, typically this “salt” is placed in front of each password.
     this.hashed_password = this.encryptPassword(password)
   })
   .get(function() {

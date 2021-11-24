@@ -1,7 +1,10 @@
 import User from '../models/user.model'
-import extend from 'lodash/extend'
+import extend from 'lodash/extend' //Remplacer par Object.assign (natif à Node)
 import errorHandler from './../helpers/dbErrorHandler'
 
+// Méthodes des controlleurs qui vont etre executé lorsque le serveur recevra une requete au endpoints / à la route correspondante
+
+// Créer un nouvel utilisateur avec l'objet JSON reçu de la requete POST, dans le req.body de le requete POST
 const create = async (req, res) => {
   const user = new User(req.body)
   try {
@@ -15,6 +18,7 @@ const create = async (req, res) => {
     })
   }
 }
+
 
 /**
  * Load user and append to req.
@@ -43,7 +47,7 @@ const read = (req, res) => {
 
 const list = async (req, res) => {
   try {
-    let users = await User.find().select('name email updated created')
+    let users = await User.find().select('name email updated created') //populate with, (penser que ça donne vie à la date "qu'est-ce qu'il y a dans cette data ?")
     res.json(users)
   } catch (err) {
     return res.status(400).json({
@@ -55,7 +59,7 @@ const list = async (req, res) => {
 const update = async (req, res) => {
   try {
     let user = req.profile
-    user = extend(user, req.body)
+    user = extend(user, req.body) //Remplacer par Object.assign
     user.updated = Date.now()
     await user.save()
     user.hashed_password = undefined
