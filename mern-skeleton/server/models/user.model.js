@@ -26,7 +26,9 @@ const UserSchema = new mongoose.Schema({
 })
 
 
-//Au moment où il y a un get, un find, de l'user, le champs password rendu va passer par le virtual ?// "When the password value is received on user creation or update, it is encrypted into a new hashed value and set to the hashed_password field, along with the unique salt value in the salt field."
+// Au moment de créer ou de mettre à jour, password est encrypté
+// Mais je sais pas encore à quel moment ni comment c'est décrypté, ni à quoi sert password finalement
+// Et il appelle un virtual pour en fait changer la valeur des champs salts et hashed_password
 UserSchema
   .virtual('password')
   .set(function(password) {
@@ -39,6 +41,9 @@ UserSchema
     return this._password
   })
 
+  //Verification du password au moment de créer, ou d'update, l'utilisateur. Juste avant que mongoose ne save l'user.
+  // Le message d'erreur sera retourné en cas d'erreur
+    // Les erreurs de Mongoose sont gérées par le helper dbErrorHandler.js
 UserSchema.path('hashed_password').validate(function(v) {
   if (this._password && this._password.length < 6) {
     this.invalidate('password', 'Password must be at least 6 characters.')
@@ -48,6 +53,9 @@ UserSchema.path('hashed_password').validate(function(v) {
   }
 }, null)
 
+//authenticate : compare le hashed_password stocké dans la base de données avec celui que l'utilisateur a fourni via le formulaire
+//encryptPassword : encrypte le password qui vient d'etre donné ds le formulaire pour qu'il soit au meme format que le password en base de données en vu de les comparer
+
 UserSchema.methods = {
   authenticate: function(plainText) {
     return this.encryptPassword(plainText) === this.hashed_password
@@ -56,9 +64,9 @@ UserSchema.methods = {
     if (!password) return ''
     try {
       return crypto
-        .createHmac('sha1', this.salt)
-        .update(password)
-        .digest('hex')
+        .createHmac('sha1', this.salt) // créer une instance d'un objet qui peut etre utilisé pour  traiter avec l'algorithme indiqué pour encoder (pour hash-er). 'sha1' c'est le nom de l'algo, et du coup le salt doit etre ajouté
+        .update(password) // met à jour le contenu de l'objet Hmac en ajoutant password
+        .digest('hex') //'calcule le digest', en fait la sortie hashée, sous forme de string si y'a un encodage (ici 'hex') sinon sous forme de buffer ('<buffer 4e 27 6d ... >)
     } catch (err) {
       return ''
     }
