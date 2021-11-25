@@ -30,7 +30,7 @@ const userByID = async (req, res, next, id) => {
       return res.status('400').json({
         error: "User not found"
       })
-    req.profile = user
+    req.profile = user //req.locals de manière générale est utilisée pour passer des données d'un middleware au(x) prochain(s)
     next()
   } catch (err) {
     return res.status('400').json({
@@ -59,7 +59,7 @@ const list = async (req, res) => {
 const update = async (req, res) => {
   try {
     let user = req.profile
-    user = extend(user, req.body) //Remplacer par Object.assign
+    user = extend(user, req.body) //Remplacer par Object.assign //?Password réencodé ?//
     user.updated = Date.now()
     await user.save()
     user.hashed_password = undefined
@@ -75,8 +75,8 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     let user = req.profile
-    let deletedUser = await user.remove()
-    deletedUser.hashed_password = undefined
+    let deletedUser = await user.remove()//Ça remove direct de la db, req.profil = user ça assigne bien l'instance de User qui est dans la db, et donc on peut en utiliser les méthodes (https://stackoverflow.com/questions/31942526/node-js-express-js-removing-user-from-request-removes-it-from-database, https://mongoosejs.com/docs/api/model.html#model_Model-remove)
+    deletedUser.hashed_password = undefined //L'objet utilisateur est nettoyé des données sensibles avant d'etre renvoyé en réponse au client
     deletedUser.salt = undefined
     res.json(deletedUser)
   } catch (err) {
