@@ -19,8 +19,8 @@ const signin = async (req, res) => {
       })
     }
 
-    const token = jwt.sign({
-      _id: user._id
+    const token = jwt.sign({ //à comprendre : le module jwt est utilisé pour générer un jwt signé utilisant une clé secrète et la valeur de l'id de l'user
+      _id: user._id//en cours
     }, config.jwtSecret)
 
     res.cookie("t", token, {
