@@ -19,7 +19,7 @@ const signin = async (req, res) => {
       })
     }
 
-    const token = jwt.sign({ //jwt c'est l'équivalent d'un filigrane qui permet de vérifier qu'un passeport  ou cart d'identité est une vraie mais ici je sais pas à quoi ça sert exactement, je sais juste que ça va etre stocké dans le client comme un cookie
+    const token = jwt.sign({ //Explication de ce qu'est jwt : c'est l'équivalent d'un filigrane qui permet de vérifier qu'un passeport  ou cart d'identité est une vraie mais ici je sais pas à quoi ça sert exactement, je sais juste que ça va etre stocké dans le client comme un cookie
       //Avec JWT, stocker le state de l'utilisateur c'est la responsabilité du client
     //Quand l'utilisateur signout, le client a besoin de supprimer le token coté client pour que l'utilisateur ne soit plus authentifié.
     //Coté serveur, on peut verifier le token généré lorsqu'un utilisateur se connecte  pour protéger les routes qui ont besoin de l'etre et d'avoir une authentifaction valide.
